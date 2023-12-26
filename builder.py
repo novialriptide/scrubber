@@ -72,11 +72,7 @@ class Builder:
 
             out_file = zip_ref.namelist()[0]
             os.replace(
-                f"{self.BIN_DIR}/{out_file}/i686-w64-mingw32/bin/{dll_path}.dll",
-                f"{self.BIN_DIR}/{dll_path}.dll",
-            )
-            os.replace(
-                f"{self.BIN_DIR}/{out_file}/i686-w64-mingw32/include/{dll_path}",
+                f"{self.BIN_DIR}/{out_file}/include/",
                 f"include/{dll_path}",
             )
 
@@ -97,7 +93,7 @@ class Builder:
 
     def install_deps(self) -> None:
         self._extract_sdl_dll_file(
-            f"https://github.com/libsdl-org/SDL/releases/download/release-{self.SDL_VERSION}/SDL2-devel-{self.SDL_VERSION}-mingw.zip",
+            f"https://github.com/libsdl-org/SDL/releases/download/release-{self.SDL_VERSION}/SDL2-2.28.5.zip",
             f"sdl-{self.SDL_VERSION}.zip",
             "SDL2",
         )
