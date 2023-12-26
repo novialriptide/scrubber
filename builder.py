@@ -3,6 +3,7 @@ __license__ = "GNU GENERAL PUBLIC LICENSE"
 
 from typing import List, Union
 from datetime import datetime
+import argparse
 import os
 import platform
 import requests
@@ -73,28 +74,33 @@ class Builder:
         os.remove(f"{out_path}")
         shutil.rmtree(f"{self.DEPENDENCY_DIRECTORY}/{out_file}")
 
-    def run(self) -> None:
+    def install_deps(self) -> None:
         self._extract_dll_file(
             f"https://github.com/libsdl-org/SDL/releases/download/release-{self.SDL_VERSION}/SDL2-devel-{self.SDL_VERSION}-mingw.zip",
             f"sdl-{self.SDL_VERSION}.zip",
             "SDL2",
         )
 
+    def compile(self) -> None:
         os.system("gcc -Iinclude app/main.cpp -o Scrubber")
 
-        if self._operating_system == "Darwin":  # macOS
-            Log.msg("macOS has been detected as your operating system.")
 
-        elif self._operating_system == "Windows":  # windows
-            Log.msg("Windows has been detected as your operating system.")
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
 
-        else:
-            raise Exception("Your operating system is not supported.")
+    subparsers = parser.add_subparsers(dest="sub_command")
+    install_parser = subparsers.add_parser(
+        "install", help="Install all C++ dependencies"
+    )
+    build_parser = subparsers.add_parser(
+        "build", help="Compile the program into an executable"
+    )
 
+    args = parser.parse_args()
+    builder = Builder()
 
-Builder().run()
-
-"""
-https://github.com/ocornut/imgui/
-https://github.com/libsdl-org/SDL/
-"""
+    match args.sub_command:
+        case "install":
+            builder.install_deps()
+        case "build":
+            builder.compile()
