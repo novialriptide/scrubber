@@ -92,7 +92,14 @@ class Builder:
         )
 
     def compile(self) -> None:
-        os.system("gcc -Iinclude app/main.cpp -o Scrubber")
+        files_to_compile = " ".join(
+            [
+                "app/main.cpp",
+                "app/imgui/*.cpp",
+            ]
+        )
+
+        os.system(f"g++ {files_to_compile} -Iinclude -std=c++11")
 
 
 if __name__ == "__main__":
