@@ -30,7 +30,6 @@ class Log:
 
 class Builder:
     SDL_VERSION = "2.28.5"
-    IMGUI_VERSION = "1.90"
     BIN_DIR = "bin"
 
     def __init__(self) -> None:
