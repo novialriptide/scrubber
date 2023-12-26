@@ -104,6 +104,15 @@ class Builder:
         self._download_imgui()
 
         os.replace(
+            "include/imgui/backends/imgui_impl_sdl2.cpp",
+            "include/imgui/imgui_impl_sdl2.cpp",
+        )
+        os.replace(
+            "include/imgui/backends/imgui_impl_sdlrenderer2.cpp",
+            "include/imgui/imgui_impl_sdlrenderer2.cpp",
+        )
+
+        os.replace(
             "include/imgui/backends/imgui_impl_sdl2.h",
             "include/imgui/imgui_impl_sdl2.h",
         )
