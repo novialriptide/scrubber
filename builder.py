@@ -1,3 +1,12 @@
+"""
+As opposed to having a CMake or make file, we have decided to contain all of our
+tools to help ourselves develop this program in one Python file.
+
+To install all of the dependencies, run `python3 builder.py install`.
+To compile this program to an executable, run `python3 builder.py build`.
+
+It's that simple!
+"""
 __authors__ = "Andrew Hong and Patrick Cao"
 __license__ = "GNU GENERAL PUBLIC LICENSE"
 
@@ -30,6 +39,7 @@ class Log:
 
 class Builder:
     SDL_VERSION = "2.28.5"
+
     BIN_DIR = "bin"
 
     def __init__(self) -> None:
@@ -101,6 +111,10 @@ if __name__ == "__main__":
 
     match args.sub_command:
         case "install":
+            Log.msg("Installing dependencies")
             builder.install_deps()
+            Log.msg("Finished installing dependencies!")
         case "build":
+            Log.msg("Compiling...")
             builder.compile()
+            Log.msg("Done!")
