@@ -56,7 +56,7 @@ class Builder:
     ) -> Union[None, str]:
         out_path = self._download_tar_file(url, filename)
         with zipfile.ZipFile(out_path, "r") as zip_ref:
-            zip_ref.extractall(f"./{self.DEPENDENCY_DIRECTORY}")
+            zip_ref.extractall(self.DEPENDENCY_DIRECTORY)
 
             out_file = zip_ref.namelist()[0]
             os.replace(
