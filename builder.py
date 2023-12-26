@@ -7,6 +7,7 @@ import os
 import platform
 import requests
 import zipfile
+import shutil
 
 
 class Log:
@@ -57,17 +58,18 @@ class Builder:
         with zipfile.ZipFile(out_path, "r") as zip_ref:
             zip_ref.extractall(f"./{self.DEPENDENCY_DIRECTORY}")
 
-            outfile = zip_ref.namelist()[0]
+            out_file = zip_ref.namelist()[0]
             os.replace(
-                f"{self.DEPENDENCY_DIRECTORY}/{outfile}/i686-w64-mingw32/{self.DEPENDENCY_DIRECTORY}/{dll_path}.dll",
+                f"{self.DEPENDENCY_DIRECTORY}/{out_file}/i686-w64-mingw32/{self.DEPENDENCY_DIRECTORY}/{dll_path}.dll",
                 f"{self.DEPENDENCY_DIRECTORY}/{dll_path}.dll",
             )
 
+            zip_ref.close()
+
             # TODO: remove extracted directory and zip file
 
-            Log.msg(f"{self.DEPENDENCY_DIRECTORY}/{out_path}")
-
-            # os.remove(f"{self.DEPENDENCY_DIRECTORY}/{out_path}")
+        os.remove(f"{out_path}")
+        shutil.rmtree(f"{self.DEPENDENCY_DIRECTORY}/{out_file}")
 
     def run(self) -> None:
         self._extract_dll_file(
