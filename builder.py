@@ -33,7 +33,7 @@ class Log:
     @staticmethod
     def input(text: str, valid_inputs: List[str]) -> str:
         display_inputs = "/".join(valid_inputs)
-        user_input = input(f"{Log.prefix()}{text} [{display_inputs}]")
+        user_input = input(f"{Log.prefix()}{text} [{display_inputs}] > ")
         return user_input
 
 
@@ -139,10 +139,9 @@ class Builder:
 
         if self._operating_system == "Darwin":  # macOS
             Log.msg("macOS has been detected as your operating system.")
-
-            if not self._is_brew_installed:
-                Log.msg("You must install brew.sh to continue.")
-                return
+            Log.input(
+                "Have you installed SDL2 via HomeBrew? `brew install sdl2`", ["y", "n"]
+            )
 
             os.system(
                 f"g++ {files_to_compile} -Iinclude/imgui -Iinclude/SDL2 `sdl2-config --cflags --libs` -std=c++11"
