@@ -38,6 +38,7 @@ class Log:
 
 
 class Builder:
+    IMGUI_VERSION = "1.90"
     SDL_VERSION = "2.28.5"
 
     BIN_DIR = "bin"
@@ -84,18 +85,29 @@ class Builder:
         os.remove(f"{out_path}")
         shutil.rmtree(f"{self.BIN_DIR}/{out_file}")
 
+    def _download_imgui(self) -> None:
+        out_path = self._download_file(
+            f"https://github.com/ocornut/imgui/archive/refs/tags/v{self.IMGUI_VERSION}.zip",
+            f"imgui-{self.IMGUI_VERSION}",
+        )
+        with zipfile.ZipFile(out_path, "r") as zip_ref:
+            zip_ref.extractall("include")
+
+        os.replace(f"include/imgui-{self.IMGUI_VERSION}", "include/imgui")
+
     def install_deps(self) -> None:
         self._extract_sdl_dll_file(
             f"https://github.com/libsdl-org/SDL/releases/download/release-{self.SDL_VERSION}/SDL2-devel-{self.SDL_VERSION}-mingw.zip",
             f"sdl-{self.SDL_VERSION}.zip",
             "SDL2",
         )
+        self._download_imgui()
 
     def compile(self) -> None:
         files_to_compile = " ".join(
             [
                 "app/main.cpp",
-                "app/imgui/*.cpp",
+                "include/imgui/*.cpp",
             ]
         )
 
