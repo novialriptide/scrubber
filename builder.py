@@ -28,6 +28,7 @@ class Log:
 
 class Builder:
     SDL_VERSION = "2.28.5"
+    DEPENDENCY_DIRECTORY = "bin"
 
     def __init__(self) -> None:
         self._operating_system = platform.system()
@@ -41,7 +42,7 @@ class Builder:
     def _download_tar_file(self, url: str, filename: str) -> Union[None, str]:
         response = requests.get(url, stream=True)
 
-        out_path = f"bin/{filename}"
+        out_path = f"{self.DEPENDENCY_DIRECTORY}/{filename}"
         if response.status_code == 200:
             with open(out_path, "wb") as f:
                 f.write(response.raw.read())
@@ -49,24 +50,37 @@ class Builder:
             return out_path
         return None
 
-    def _extract_dll_file(self, url: str, filename: str) -> None:
+    def _extract_dll_file(
+        self, url: str, filename: str, dll_path: str
+    ) -> Union[None, str]:
         out_path = self._download_tar_file(url, filename)
         with zipfile.ZipFile(out_path, "r") as zip_ref:
-            zip_ref.extractall("./bin")
+            zip_ref.extractall(f"./{self.DEPENDENCY_DIRECTORY}")
+
+            outfile = zip_ref.namelist()[0]
+            os.replace(
+                f"{self.DEPENDENCY_DIRECTORY}/{outfile}/i686-w64-mingw32/{self.DEPENDENCY_DIRECTORY}/{dll_path}.dll",
+                f"{self.DEPENDENCY_DIRECTORY}/{dll_path}.dll",
+            )
+
+            # TODO: remove extracted directory and zip file
+
+            Log.msg(f"{self.DEPENDENCY_DIRECTORY}/{out_path}")
+
+            # os.remove(f"{self.DEPENDENCY_DIRECTORY}/{out_path}")
 
     def run(self) -> None:
         self._extract_dll_file(
             f"https://github.com/libsdl-org/SDL/releases/download/release-{self.SDL_VERSION}/SDL2-devel-{self.SDL_VERSION}-mingw.zip",
             f"sdl-{self.SDL_VERSION}.zip",
+            "SDL2",
         )
 
         if self._operating_system == "Darwin":  # macOS
             Log.msg("macOS has been detected as your operating system.")
 
-        elif self._operating_system == "Windows":
+        elif self._operating_system == "Windows":  # windows
             Log.msg("Windows has been detected as your operating system.")
-
-            pass
 
         else:
             raise Exception("Your operating system is not supported.")
