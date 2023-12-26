@@ -137,9 +137,24 @@ class Builder:
             ]
         )
 
-        os.system(
-            f"g++ {files_to_compile} -Iinclude/imgui -Iinclude/SDL2 `sdl2-config --cflags --libs` -std=c++11"
-        )
+        if self._operating_system == "Darwin":  # macOS
+            Log.msg("macOS has been detected as your operating system.")
+
+            if not self._is_brew_installed:
+                Log.msg("You must install brew.sh to continue.")
+                return
+
+            os.system(
+                f"g++ {files_to_compile} -Iinclude/imgui -Iinclude/SDL2 `sdl2-config --cflags --libs` -std=c++11"
+            )
+
+        elif self._operating_system == "Windows":
+            Log.msg("Windows has been detected as your operating system.")
+
+            pass
+
+        else:
+            raise Exception("Your operating system is not supported.")
 
 
 if __name__ == "__main__":
