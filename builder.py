@@ -43,6 +43,11 @@ class Builder:
 
     BIN_DIR = "bin"
 
+    IMGUI_DOWNLOAD_URL = (
+        f"https://github.com/ocornut/imgui/archive/refs/tags/v{self.IMGUI_VERSION}.zip"
+    )
+    SDL2_DOWNLOAD_URL = f"https://github.com/libsdl-org/SDL/releases/download/release-{self.SDL_VERSION}/SDL2-2.28.5.zip"
+
     def __init__(self) -> None:
         self._operating_system = platform.system()
         self._platform = platform.platform()
@@ -83,7 +88,7 @@ class Builder:
 
     def _download_imgui(self) -> None:
         out_path = self._download_file(
-            f"https://github.com/ocornut/imgui/archive/refs/tags/v{self.IMGUI_VERSION}.zip",
+            self.IMGUI_DOWNLOAD_URL,
             f"imgui-{self.IMGUI_VERSION}",
         )
         with zipfile.ZipFile(out_path, "r") as zip_ref:
@@ -105,7 +110,7 @@ class Builder:
         self._clear_directories()
 
         self._extract_sdl_dll_file(
-            f"https://github.com/libsdl-org/SDL/releases/download/release-{self.SDL_VERSION}/SDL2-2.28.5.zip",
+            self.SDL2_DOWNLOAD_URL,
             f"sdl-{self.SDL_VERSION}.zip",
             "SDL2",
         )
