@@ -52,11 +52,6 @@ class Builder:
         self._operating_system = platform.system()
         self._platform = platform.platform()
 
-    @property
-    def _is_brew_installed(self) -> bool:
-        result = os.system("which brew")
-        return result != "brew not found"
-
     def _download_file(self, url: str, filename: str) -> Union[None, str]:
         response = requests.get(url, stream=True)
 
