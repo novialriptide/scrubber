@@ -80,6 +80,8 @@ class Builder:
             "SDL2",
         )
 
+        os.system("gcc -Iinclude app/main.cpp -o Scrubber")
+
         if self._operating_system == "Darwin":  # macOS
             Log.msg("macOS has been detected as your operating system.")
 
