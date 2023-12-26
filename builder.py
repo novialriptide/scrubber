@@ -95,7 +95,19 @@ class Builder:
 
         os.replace(f"include/imgui-{self.IMGUI_VERSION}", "include/imgui")
 
+    def _clear_directories(self) -> None:
+        if os.path.exists("bin"):
+            shutil.rmtree("bin")
+
+        if os.path.exists("include"):
+            shutil.rmtree("include")
+
+        os.mkdir("bin")
+        os.mkdir("include")
+
     def install_deps(self) -> None:
+        self._clear_directories()
+
         self._extract_sdl_dll_file(
             f"https://github.com/libsdl-org/SDL/releases/download/release-{self.SDL_VERSION}/SDL2-devel-{self.SDL_VERSION}-mingw.zip",
             f"sdl-{self.SDL_VERSION}.zip",
