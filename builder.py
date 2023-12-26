@@ -103,6 +103,15 @@ class Builder:
         )
         self._download_imgui()
 
+        os.replace(
+            "include/imgui/backends/imgui_impl_sdl2.h",
+            "include/imgui/imgui_impl_sdl2.h",
+        )
+        os.replace(
+            "include/imgui/backends/imgui_impl_sdlrenderer2.h",
+            "include/imgui/imgui_impl_sdlrenderer2.h",
+        )
+
     def compile(self) -> None:
         files_to_compile = " ".join(
             [
