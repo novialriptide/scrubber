@@ -4,7 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/include/**"
+                "${workspaceFolder}/include/**",
+                "${workspaceFolder}/include/imgui/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -21,7 +22,8 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/include/**"
+                "${workspaceFolder}/include/**",
+                "${workspaceFolder}/include/imgui/**"
             ],
             "defines": [],
             "macFrameworkPath": [
@@ -30,8 +32,7 @@
             "compilerPath": "/usr/bin/clang++",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "${default}",
-            "compilerPathInCppPropertiesJson": "/usr/bin/clang",
+            "compilerPathInCppPropertiesJson": "/usr/bin/clang++",
             "mergeConfigurations": false,
             "browse": {
                 "path": [
