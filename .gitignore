@@ -34,5 +34,6 @@
 *.out
 *.app
 
-# Bin
+# C++
 bin/**
+include/**
