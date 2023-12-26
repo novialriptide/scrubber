@@ -62,7 +62,7 @@ class Builder:
             return out_path
         return None
 
-    def _extract_dll_file(
+    def _extract_sdl_dll_file(
         self, url: str, filename: str, dll_path: str
     ) -> Union[None, str]:
         out_path = self._download_file(url, filename)
@@ -85,7 +85,7 @@ class Builder:
         shutil.rmtree(f"{self.BIN_DIR}/{out_file}")
 
     def install_deps(self) -> None:
-        self._extract_dll_file(
+        self._extract_sdl_dll_file(
             f"https://github.com/libsdl-org/SDL/releases/download/release-{self.SDL_VERSION}/SDL2-devel-{self.SDL_VERSION}-mingw.zip",
             f"sdl-{self.SDL_VERSION}.zip",
             "SDL2",
