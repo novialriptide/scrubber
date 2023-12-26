@@ -60,13 +60,15 @@ class Builder:
 
             out_file = zip_ref.namelist()[0]
             os.replace(
-                f"{self.DEPENDENCY_DIRECTORY}/{out_file}/i686-w64-mingw32/{self.DEPENDENCY_DIRECTORY}/{dll_path}.dll",
+                f"{self.DEPENDENCY_DIRECTORY}/{out_file}/i686-w64-mingw32/bin/{dll_path}.dll",
                 f"{self.DEPENDENCY_DIRECTORY}/{dll_path}.dll",
+            )
+            os.replace(
+                f"{self.DEPENDENCY_DIRECTORY}/{out_file}/i686-w64-mingw32/include/{dll_path}",
+                f"include/{dll_path}",
             )
 
             zip_ref.close()
-
-            # TODO: remove extracted directory and zip file
 
         os.remove(f"{out_path}")
         shutil.rmtree(f"{self.DEPENDENCY_DIRECTORY}/{out_file}")
