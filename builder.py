@@ -30,7 +30,8 @@ class Log:
 
 class Builder:
     SDL_VERSION = "2.28.5"
-    DEPENDENCY_DIRECTORY = "bin"
+    IMGUI_VERSION = "1.90"
+    BIN_DIR = "bin"
 
     def __init__(self) -> None:
         self._operating_system = platform.system()
@@ -41,10 +42,10 @@ class Builder:
         result = os.system("which brew")
         return result != "brew not found"
 
-    def _download_tar_file(self, url: str, filename: str) -> Union[None, str]:
+    def _download_file(self, url: str, filename: str) -> Union[None, str]:
         response = requests.get(url, stream=True)
 
-        out_path = f"{self.DEPENDENCY_DIRECTORY}/{filename}"
+        out_path = f"{self.BIN_DIR}/{filename}"
         if response.status_code == 200:
             with open(out_path, "wb") as f:
                 f.write(response.raw.read())
@@ -55,24 +56,24 @@ class Builder:
     def _extract_dll_file(
         self, url: str, filename: str, dll_path: str
     ) -> Union[None, str]:
-        out_path = self._download_tar_file(url, filename)
+        out_path = self._download_file(url, filename)
         with zipfile.ZipFile(out_path, "r") as zip_ref:
-            zip_ref.extractall(self.DEPENDENCY_DIRECTORY)
+            zip_ref.extractall(self.BIN_DIR)
 
             out_file = zip_ref.namelist()[0]
             os.replace(
-                f"{self.DEPENDENCY_DIRECTORY}/{out_file}/i686-w64-mingw32/bin/{dll_path}.dll",
-                f"{self.DEPENDENCY_DIRECTORY}/{dll_path}.dll",
+                f"{self.BIN_DIR}/{out_file}/i686-w64-mingw32/bin/{dll_path}.dll",
+                f"{self.BIN_DIR}/{dll_path}.dll",
             )
             os.replace(
-                f"{self.DEPENDENCY_DIRECTORY}/{out_file}/i686-w64-mingw32/include/{dll_path}",
+                f"{self.BIN_DIR}/{out_file}/i686-w64-mingw32/include/{dll_path}",
                 f"include/{dll_path}",
             )
 
             zip_ref.close()
 
         os.remove(f"{out_path}")
-        shutil.rmtree(f"{self.DEPENDENCY_DIRECTORY}/{out_file}")
+        shutil.rmtree(f"{self.BIN_DIR}/{out_file}")
 
     def install_deps(self) -> None:
         self._extract_dll_file(
