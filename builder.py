@@ -120,7 +120,7 @@ class Builder:
             ]
         )
 
-        os.system(f"g++ {files_to_compile} -Iinclude -std=c++11")
+        os.system(f"g++ {files_to_compile} -Iinclude/imgui -Iinclude/SDL2 -std=c++11")
 
 
 if __name__ == "__main__":
