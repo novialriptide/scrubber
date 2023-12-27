@@ -11,3 +11,12 @@ SDL2    ==  2.28.5
 ImGui   ==  1.90
 OpenCV  ==  4.8.1
 ```
+
+## Build Instructions
+
+### macOS
+
+1. Clone this repository (`git clone --recursive https://github.com/novialriptide/scrubber.git`)
+2. Install the [HomeBrew](https://brew.sh/) package manager
+3. Install SDL2 (`brew install sdl2`)
+4. Run `make`
