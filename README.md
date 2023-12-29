@@ -7,9 +7,10 @@ We encourage our contributors to follow the [Google's C++ Style Guide](https://g
 ## Dependencies
 
 ```
-SDL2    ==  2.28.5
-ImGui   ==  1.90
-OpenCV  ==  4.8.1
+SDL              ==  2.28.5
+imgui            ==  1.90
+opencv           ==  4.8.1
+opencv_contrib   ==  4.8.1
 ```
 
 ## Build Instructions

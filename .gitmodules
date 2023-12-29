@@ -7,3 +7,6 @@
 [submodule "libs/SDL"]
 	path = libs/SDL
 	url = https://github.com/libsdl-org/SDL.git
+[submodule "libs/opencv_contrib"]
+	path = libs/opencv_contrib
+	url = https://github.com/opencv/opencv_contrib.git
