@@ -20,4 +20,11 @@ opencv_contrib   ==  4.8.1
 1. Clone this repository (`git clone --recursive https://github.com/novialriptide/scrubber.git`)
 2. Install the [HomeBrew](https://brew.sh/) package manager
 3. Install SDL2 (`brew install sdl2`)
-4. Run `make`
+4. Install clang-format (`brew install clang-format`)
+5. Run `make`
+
+## How to Contribute
+
+All contributions are welcome! Before you contribute, make sure you create an issue on our issue tracker before actually working on it. We would need to approve the idea/bug fix before it's actually worked on.
+
+- Run `clang-format -i *.cpp` to format your code
