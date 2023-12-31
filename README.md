@@ -18,7 +18,7 @@ opencv_contrib   ==  4.8.1
 ### macOS
 
 1. Clone this repository (`git clone --recursive https://github.com/novialriptide/scrubber.git`)
-2. Install the [HomeBrew](https://brew.sh/) package manager
+2. Install [HomeBrew](https://brew.sh/)
 3. Install SDL2 (`brew install sdl2`)
 4. Install clang-format (`brew install clang-format`)
 5. Run `make`
@@ -26,10 +26,13 @@ opencv_contrib   ==  4.8.1
 ### Windows 11
 
 1. Clone this repository (`git clone --recursive https://github.com/novialriptide/scrubber.git`)
-2. Install [MSYS2](https://www.msys2.org/) package manager
+2. Install [MSYS2](https://www.msys2.org/)
    1. Make sure you set your installation folder to `C:/msys64`
 3. Install SDL2 from the MSYS2 terminal (`pacman -S mingw-w64-i686-SDL2`)
-4. Run `mingw32-make`
+4. Install clang-format
+   1. Install the latest version of [Python](https://www.python.org/)
+   2. Install clang-format (`python -m pip install clang-format`)
+5. Run `mingw32-make`
 
 ## How to Contribute
 
