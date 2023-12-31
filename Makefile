@@ -8,19 +8,20 @@ SRC += libs/imgui/backends/imgui_impl_sdlrenderer2.cpp
 SRC += libs/imgui/backends/imgui_impl_sdl2.cpp
 
 LIBS =
+LIBS += -I libs/imgui
+LIBS += -I libs/imgui/backends
 
 ifeq ($(OS), Windows_NT)
 
-    LIBS += -I libs/imgui
-    LIBS += -I libs/imgui/backends
-    LIBS += -I libs/SDL/include
-    LIBS += -lmingw32 -lSDL2main -lSDL2
-    
+	LIBS += -I x86_64-w64-mingw32/include/SDL2
+	LIBS += -L x86_64-w64-mingw32/lib
+
+	LIBS += -lmingw32 -lSDL2main -lSDL2
+
 else ifeq ($(shell uname -s), Darwin)
 
-    LIBS += -I libs/imgui
-    LIBS += -I libs/imgui/backends
-    LIBS += -I libs/SDL2 `sdl2-config --cflags --libs`
+	LIBS += -I libs/SDL2
+	LIBS += `sdl2-config --cflags --libs`
 
 endif
 
