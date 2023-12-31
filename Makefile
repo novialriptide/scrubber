@@ -25,5 +25,4 @@ else ifeq ($(shell uname -s), Darwin)
 endif
 
 all: $(scrubber)
-    $(CC) $(SRC) $(LIBS) $(CFLAGS)
-	
+	$(CC) $(SRC) $(LIBS) $(CFLAGS)
