@@ -37,3 +37,6 @@
 # C++
 bin/**
 include/**
+
+# ImGui
+imgui.ini
