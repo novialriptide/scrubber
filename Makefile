@@ -11,18 +11,19 @@ LIBS =
 
 ifeq ($(OS), Windows_NT)
 
-	LIBS += -I libs/imgui
-	LIBS += -I libs/imgui/backends
-	LIBS += -I libs/SDL/include
-	LIBS += -lmingw32 -lSDL2main -lSDL2
+    LIBS += -I libs/imgui
+    LIBS += -I libs/imgui/backends
+    LIBS += -I libs/SDL/include
+    LIBS += -lmingw32 -lSDL2main -lSDL2
+    
+else ifeq ($(shell uname -s), Darwin)
 
-else
-
-	LIBS += -I libs/imgui
-	LIBS += -I libs/imgui/backends
-	LIBS += -I libs/SDL2 `sdl2-config --cflags --libs`
+    LIBS += -I libs/imgui
+    LIBS += -I libs/imgui/backends
+    LIBS += -I libs/SDL2 `sdl2-config --cflags --libs`
 
 endif
 
-all: $(scrubber) 
-	$(CC) $(SRC) $(LIBS) $(CFLAGS)
+all: $(scrubber)
+    $(CC) $(SRC) $(LIBS) $(CFLAGS)
+	
