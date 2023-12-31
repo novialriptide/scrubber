@@ -26,7 +26,10 @@ opencv_contrib   ==  4.8.1
 ### Windows 11
 
 1. Clone this repository (`git clone --recursive https://github.com/novialriptide/scrubber.git`)
-2. Run `mingw32-make`
+2. Install [MSYS2](https://www.msys2.org/) package manager
+   1. Make sure you set your installation folder to `C:/msys64`
+3. Install SDL2 from the MSYS2 terminal (`pacman -S mingw-w64-i686-SDL2`)
+4. Run `mingw32-make`
 
 ## How to Contribute
 

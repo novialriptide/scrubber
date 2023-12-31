@@ -13,8 +13,8 @@ LIBS += -I libs/imgui/backends
 
 ifeq ($(OS), Windows_NT)
 
-	LIBS += -I i686-w64-mingw32/include/SDL2
-	LIBS += -L i686-w64-mingw32/lib
+	LIBS += -I C:/msys64/mingw32/include/SDL2
+	LIBS += -L C:/msys64/mingw32/lib
 
 	LIBS += -l gdi32
 	LIBS += -l gdiplus
