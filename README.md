@@ -23,6 +23,11 @@ opencv_contrib   ==  4.8.1
 4. Install clang-format (`brew install clang-format`)
 5. Run `make`
 
+### Windows 11
+
+1. Clone this repository (`git clone --recursive https://github.com/novialriptide/scrubber.git`)
+2. Run `mingw32-make`
+
 ## How to Contribute
 
 All contributions are welcome! Before you contribute, make sure you create an issue on our issue tracker before actually working on it. We would need to approve the idea/bug fix before it's actually worked on.
