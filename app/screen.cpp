@@ -1,10 +1,3 @@
-/*
- * Implementation of the Screen module
- * 
- * Some of the implementations were copied over
- * from https://gist.github.com/prashanthrajagopal/05f8ad157ece964d8c4d
- * 
- */
 #ifdef _WIN32
 // clang-format off
 #include <windows.h>
@@ -13,7 +6,18 @@
 // clang-format on
 #endif
 #include <stdio.h>
+#include <stdexcept>
 
+/**
+ * @brief Get the Encoder Clsid object
+ * 
+ * Code taken straight from https://learn.microsoft.com/en-us/windows/win32/gdiplus/-gdiplus-retrieving-the-class-identifier-for-an-encoder-use?redirectedfrom=MSDN
+ * I have no idea what this does. - Andrew
+ * 
+ * @param format 
+ * @param pClsid 
+ * @return int 
+ */
 int GetEncoderClsid(const WCHAR* format, CLSID* pClsid) {
   UINT num = 0;
   UINT size = 0;
@@ -40,37 +44,45 @@ int GetEncoderClsid(const WCHAR* format, CLSID* pClsid) {
   return 0;
 }
 
-class Screen {
- public:
-  Screen() {
-    IStream* istream;
-    Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-    ULONG_PTR gdiplusToken;
+/**
+ * @brief Get the Primary Monitor Stream Data object in JPEG format.
+ * 
+ * @return IStream* 
+ */
+IStream* GetPrimaryMonitorStreamData() {
+  IStream* istream = (IStream *)malloc(sizeof(IStream));
+  Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+  ULONG_PTR gdiplusToken;
 
-    Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+  Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
-    HDC hdc = GetDC(NULL);
-    HDC hDest = CreateCompatibleDC(hdc);
+  HDC src = GetDC(NULL);
+  HDC dest = CreateCompatibleDC(src);
 
-    int width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-    int height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+  int width = GetSystemMetrics(SM_CXSCREEN);
+  int height = GetSystemMetrics(SM_CYSCREEN);
 
-    HBITMAP hbDesktop = CreateCompatibleBitmap(hdc, width, height);
-    SelectObject(hDest, hbDesktop);
+  HBITMAP result = CreateCompatibleBitmap(src, width, height);
+  SelectObject(dest, result);
 
-    // Copy from the desktop device context to the bitmap device context.
-    BitBlt(hDest, 0, 0, width, height, hdc, 0, 0, SRCCOPY);
+  // Copy from the desktop device context to the bitmap device context.
+  BitBlt(dest, 0, 0, width, height, src, 0, 0, SRCCOPY);
 
-    Gdiplus::Bitmap bitmap(hbDesktop, NULL);
-    CLSID clsid;
-    GetEncoderClsid(L"image/jpeg", &clsid);
-    bitmap.Save(L"screen.jpeg", &clsid, NULL);  // To save the jpeg to a file
-    bitmap.Save(istream, &clsid, NULL);
-
-    ReleaseDC(NULL, hdc);
-    DeleteObject(hbDesktop);
-    DeleteDC(hDest);
-    Gdiplus::GdiplusShutdown(gdiplusToken);
+  Gdiplus::Bitmap bitmap(result, NULL);
+  CLSID clsid;
+  int encoder_clsid = GetEncoderClsid(L"image/jpeg", &clsid);
+  if (encoder_clsid < 0)
+  {
+    throw std::runtime_error("JPEG encoder not included with system.");
   }
-  int Dump() { return 0; }
-};
+
+  bitmap.Save(L"screen.jpeg", &clsid, NULL);
+  bitmap.Save(istream, &clsid, NULL);
+
+  ReleaseDC(NULL, src);
+  DeleteObject(result);
+  DeleteDC(dest);
+  Gdiplus::GdiplusShutdown(gdiplusToken);
+
+  return istream;
+}
