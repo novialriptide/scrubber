@@ -71,8 +71,7 @@ IStream* GetPrimaryMonitorStreamData() {
     Gdiplus::Bitmap bitmap(result, NULL);
     CLSID clsid;
     int encoder_clsid = GetEncoderClsid(L"image/jpeg", &clsid);
-    if (encoder_clsid < 0)
-    {
+    if (encoder_clsid < 0) {
       throw std::runtime_error("JPEG encoder not included with system.");
     }
 
