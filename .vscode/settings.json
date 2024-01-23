@@ -1,6 +1,5 @@
 {
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "ms-python.black-formatter",
   "files.associations": {
     "vector": "cpp"
   }
