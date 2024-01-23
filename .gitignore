@@ -38,5 +38,7 @@
 bin/**
 include/**
 
-# ImGui
+# Scrubber-related
 imgui.ini
+Scrubber
+Scrubber.dSYM
