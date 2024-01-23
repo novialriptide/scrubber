@@ -10,3 +10,6 @@
 [submodule "libs/opencv_contrib"]
 	path = libs/opencv_contrib
 	url = https://github.com/opencv/opencv_contrib.git
+[submodule "libs/imgui-filebrowser"]
+	path = libs/imgui-filebrowser
+	url = https://github.com/AirGuanZ/imgui-filebrowser.git
