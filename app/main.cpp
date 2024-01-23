@@ -4,10 +4,9 @@
 #include <stdio.h>
 
 #include "imgui.h"
+#include "imfilebrowser.h"
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_sdlrenderer2.h"
-
-// #include "screen.cpp"
 
 int main(int, char**) {
   // GetPrimaryMonitorStreamData();
@@ -48,7 +47,6 @@ int main(int, char**) {
   // Our state
   bool show_demo_window = true;
   bool show_another_window = false;
-  ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
   // Main loop
   bool done = false;
@@ -80,7 +78,6 @@ int main(int, char**) {
       ImGui::Checkbox("Another Window", &show_another_window);
 
       ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-      ImGui::ColorEdit3("clear color", (float*)&clear_color);
 
       if (ImGui::Button("Button"))
         counter++;
@@ -94,8 +91,7 @@ int main(int, char**) {
     // Rendering
     ImGui::Render();
     SDL_RenderSetScale(renderer, io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y);
-    SDL_SetRenderDrawColor(renderer, (Uint8)(clear_color.x * 255), (Uint8)(clear_color.y * 255),
-                           (Uint8)(clear_color.z * 255), (Uint8)(clear_color.w * 255));
+    SDL_SetRenderDrawColor(renderer, 96, 96, 96, 0);
     SDL_RenderClear(renderer);
     ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
     SDL_RenderPresent(renderer);
