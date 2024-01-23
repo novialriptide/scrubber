@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdexcept>
 
+#ifdef _WIN32
 /**
  * @brief Get the Encoder Clsid object
  * 
@@ -87,3 +88,4 @@ IStream* GetPrimaryMonitorStreamData() {
 
   return istream;
 }
+#endif
