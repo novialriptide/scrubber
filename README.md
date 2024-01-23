@@ -38,4 +38,4 @@ opencv_contrib   ==  4.8.1
 
 All contributions are welcome! Before you contribute, make sure you create an issue on our issue tracker before actually working on it. We would need to approve the idea/bug fix before it's actually worked on.
 
-- Run `clang-format -i *.cpp` to format your code
+- Run `clang-format -i app/*.cpp` to format your code
