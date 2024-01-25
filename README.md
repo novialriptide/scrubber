@@ -1,4 +1,4 @@
-# scrubber
+# scrubber [![macOS](https://github.com/novialriptide/scrubber/actions/workflows/build-from-macos.yml/badge.svg)](https://github.com/novialriptide/scrubber/actions/workflows/build-from-macos.yml)
 
 A tool that allows live-streamers to censor out keywords to make their stream more friendly to younger audiences.
 
