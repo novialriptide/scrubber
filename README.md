@@ -1,8 +1,6 @@
 # scrubber [![macOS](https://github.com/novialriptide/scrubber/actions/workflows/build-from-macos.yml/badge.svg)](https://github.com/novialriptide/scrubber/actions/workflows/build-from-macos.yml)
 
-A tool that allows live-streamers to censor out keywords to make their stream more friendly to younger audiences.
-
-We encourage our contributors to follow the [Google's C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
+A C++17 tool that allows live-streamers to censor out keywords to make their stream more friendly to younger audiences.
 
 ## Dependencies
 
@@ -36,7 +34,7 @@ opencv_contrib   ==  4.8.1
 
 ## How to Contribute
 
-All contributions are welcome! Before you contribute, make sure you create an issue on our issue tracker before actually working on it. We would need to approve the idea/bug fix before it's actually worked on.
+All contributions are welcome! Before you contribute, make sure you create an issue on our issue tracker before actually working on it. We would need to approve the idea/bug fix before it's actually worked on. We also encourage our contributors to follow the [Google's C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
 
 - Run `clang-format -i app/*.cpp` to format your code
 
