@@ -85,7 +85,7 @@ int main(int, char**) {
       const char* items[] = {"Apple",  "Banana",    "Cherry",     "Kiwi",      "Mango",
                              "Orange", "Pineapple", "Strawberry", "Watermelon"};
       static int item_current = 1;
-      ImGui::ListBox("Censored Words", &item_current, items, IM_ARRAYSIZE(items), 4);
+      ImGui::ListBox("Censored Words", &item_current, items, IM_ARRAYSIZE(items), 10);
 
       ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
       ImGui::End();
