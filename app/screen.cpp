@@ -44,14 +44,17 @@ int GetEncoderClsid(const WCHAR* format, CLSID* pClsid) {
   free(pImageCodecInfo);
   return 0;
 }
+#endif
 
 /**
  * @brief Get the Primary Monitor Stream Data object in JPEG format.
  * 
  * @return IStream* 
  */
+#ifdef _WIN32
 IStream* GetPrimaryMonitorStreamData() {
   IStream* istream = (IStream*)malloc(sizeof(IStream));
+
   Gdiplus::GdiplusStartupInput gdiplusStartupInput;
   ULONG_PTR gdiplusToken;
 
