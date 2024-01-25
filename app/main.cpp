@@ -44,9 +44,10 @@ int main(int, char**) {
   ImGui_ImplSDL2_InitForSDLRenderer(window, renderer);
   ImGui_ImplSDLRenderer2_Init(renderer);
 
+  ImGui::FileBrowser fileDialog;
+
   // Our state
-  bool show_demo_window = true;
-  bool show_another_window = false;
+  bool display_modifiers = true;
 
   // Main loop
   bool done = false;
@@ -66,27 +67,31 @@ int main(int, char**) {
     ImGui::NewFrame();
 
     {
-      static float f = 0.0f;
-      static int counter = 0;
+      int window_width;
+      int window_height;
+      SDL_GetWindowSize(window, &window_width, &window_height);
+
+      static float gaussian_blur_weight = 0.0f;
 
       ImGui::SetNextWindowPos(ImVec2(0, 0));
-      ImGui::Begin("Hello, world!", 0,
-                   ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+      ImGui::SetNextWindowSize(ImVec2(0, window_height));
+      ImGui::Begin("Tools", 0,
+                   ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
+                       ImGuiWindowFlags_NoCollapse);
 
-      ImGui::Text("This is some useful text.");
-      ImGui::Checkbox("Demo Window", &show_demo_window);
-      ImGui::Checkbox("Another Window", &show_another_window);
+      ImGui::Checkbox("Display modifiers", &display_modifiers);
+      ImGui::SliderFloat("Gaussian Blur", &gaussian_blur_weight, 0.0f, 1.0f);
 
-      ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-
-      if (ImGui::Button("Button"))
-        counter++;
-      ImGui::SameLine();
-      ImGui::Text("counter = %d", counter);
+      const char* items[] = {"Apple",  "Banana",    "Cherry",     "Kiwi",      "Mango",
+                             "Orange", "Pineapple", "Strawberry", "Watermelon"};
+      static int item_current = 1;
+      ImGui::ListBox("Censored Words", &item_current, items, IM_ARRAYSIZE(items), 4);
 
       ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
       ImGui::End();
     }
+
+    fileDialog.Display();
 
     // Rendering
     ImGui::Render();
