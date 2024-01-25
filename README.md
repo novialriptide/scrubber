@@ -39,3 +39,7 @@ opencv_contrib   ==  4.8.1
 All contributions are welcome! Before you contribute, make sure you create an issue on our issue tracker before actually working on it. We would need to approve the idea/bug fix before it's actually worked on.
 
 - Run `clang-format -i app/*.cpp` to format your code
+
+## Disclaimer
+
+There will be some instances of foul language contained within the source code that could be considered as derogatory or offensive. This is not an attempt to attack anyone, as the language in the repository is necessary to make sure the software would work properly.
