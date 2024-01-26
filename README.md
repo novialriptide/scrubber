@@ -37,7 +37,9 @@ opencv_contrib   ==  4.8.1
 
 All contributions are welcome! Before you contribute, make sure you create an issue on our issue tracker before actually working on it. We would need to approve the idea/bug fix before it's actually worked on. We also encourage our contributors to follow the [Google's C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
 
-- Run `clang-format -i app/*.cpp` to format your code
+It is highly recommended to use [Visual Studio Code](https://code.visualstudio.com/), as tools such as intellisense and auto-formatting are setup to enhance the developer experience. Contributions to add support to other IDEs are welcome!
+
+Use `clang-format -i app/*.cpp` to format your code
 
 ## Disclaimer
 
