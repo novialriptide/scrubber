@@ -108,7 +108,7 @@ int main(int, char**) {
       bool is_valid_file = !(std::filesystem::is_directory(fileDialog.GetSelected()));
       const char* display_filename = "";
       if (is_valid_file) {
-        display_filename = fileDialog.GetSelected().filename().c_str();
+        display_filename = (char*)fileDialog.GetSelected().filename().c_str();
       }
       ImGui::Text("%s", display_filename);
 
