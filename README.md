@@ -18,11 +18,8 @@ opencv_contrib   ==  4.8.1
 
 1. Clone this repository (`git clone --recursive https://github.com/novialriptide/scrubber.git`)
 2. Install [HomeBrew](https://brew.sh/)
-3. Install SDL2 (`brew install sdl2@2.28.5`)
-4. Install SDL2_image (`brew install sdl2_image@2.8.2`)
-5. Install opencv (`brew install opencv@4.8.1`)
-6. Install clang-format (`brew install clang-format`)
-7. Run `make`
+3. Install dependencies (`brew install sdl2 sdl2_image opencv clang-format`)
+4. Run `make`
 
 ### Windows 11
 

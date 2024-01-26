@@ -11,6 +11,6 @@ jobs:
         with:
           submodules: true
       - name: Install dependencies
-        run: brew install sdl2@2.28.5 sdl2_image@2.8.2 opencv@4.8.1
+        run: brew install sdl2 sdl2_image opencv clang-format
       - name: Build
         run: make
