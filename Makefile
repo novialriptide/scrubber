@@ -12,18 +12,18 @@ LIBS += -I libs/imgui
 LIBS += -I libs/imgui/backends
 LIBS += -I libs/imgui-filebrowser
 
-LIBS += $(shell pkg-config --cflags --libs opencv4)
+#LIBS += $(shell pkg-config --cflags --libs opencv4)
 
 ifeq ($(OS), Windows_NT)
-
-	LIBS += -I C:/msys64/mingw32/include/SDL2
-	LIBS += -L C:/msys64/mingw32/lib
 
 	LIBS += -l gdi32
 	LIBS += -l gdiplus
 	LIBS += -l ole32
+	
+	LIBS += -I C:\msys64\mingw32\include/SDL2
+	LIBS += -L C:\msys64\mingw32\lib
 
-	LIBS += -l mingw32 -l SDL2main -l SDL2 -l SDL2image
+	LIBS += -l mingw32 -l SDL2main -l SDL2 -l SDL2_image
 
 else ifeq ($(shell uname -s), Darwin)
 
