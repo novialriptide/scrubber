@@ -5,11 +5,11 @@ A C++17 tool that allows live-streamers to censor out keywords to make their str
 ## Dependencies
 
 ```
-SDL              ==  2.28.5
-SDL_image        ==  2.8.2
-imgui            ==  1.90
-opencv           ==  4.8.1
-opencv_contrib   ==  4.8.1
+SDL                ==  2.28.5
+SDL_image          ==  2.8.2
+imgui              ==  1.90
+imgui-filebrowser  ==  7cc76a0
+opencv             ==  4.8.1
 ```
 
 ## Build Instructions
