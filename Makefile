@@ -12,6 +12,8 @@ LIBS += -I libs/imgui
 LIBS += -I libs/imgui/backends
 LIBS += -I libs/imgui-filebrowser
 
+LIBS += $(shell pkg-config --cflags --libs opencv4)
+
 ifeq ($(OS), Windows_NT)
 
 	LIBS += -I C:/msys64/mingw32/include/SDL2
