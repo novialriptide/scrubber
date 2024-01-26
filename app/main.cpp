@@ -11,11 +11,10 @@
 
 #include "imgui_theme.hpp"
 
-int* get_center_coordinates(int window_width, int window_height, int image_width, int image_height) {
-  static int pos[2];
-  pos[0] = (int)(window_width / 2 - image_width / 2);
-  pos[1] = (int)(window_height / 2 - image_height / 2);
-  return pos;
+void get_center_coordinates(int window_width, int window_height, int image_width, int image_height, int& dest_x,
+                            int& dest_y) {
+  dest_x = (int)(window_width / 2 - image_width / 2);
+  dest_y = (int)(window_height / 2 - image_height / 2);
 }
 
 int main(int, char**) {
@@ -138,11 +137,12 @@ int main(int, char**) {
     int preview_image_width = (int)(window_width * 0.5);
     int preview_image_height = (int)(window_width * 0.5 * src_preview_image_height / src_preview_image_width);
 
-    int* preview_image_pos =
-        get_center_coordinates(window_width, window_height, preview_image_width, preview_image_height);
+    int preview_image_x;
+    int preview_image_y;
+    get_center_coordinates(window_width, window_height, preview_image_width, preview_image_height, preview_image_x,
+                           preview_image_y);
 
-    SDL_Rect location = {toolbar_width + preview_image_pos[0], preview_image_pos[1], preview_image_width,
-                         preview_image_height};
+    SDL_Rect location = {toolbar_width + preview_image_x, preview_image_y, preview_image_width, preview_image_height};
     SDL_RenderCopy(renderer, preview_texture, NULL, &location);
 
     ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
