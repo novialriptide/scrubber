@@ -32,14 +32,16 @@ int main(int, char**) {
     return 0;
   }
 
-  SDL_Surface* lettuce_sur = IMG_Load("94176792_p0.png");
-  SDL_Texture* lettuce_tex = SDL_CreateTextureFromSurface(renderer, lettuce_sur);
-  if (lettuce_tex == NULL) {
+  SDL_Surface* preview_surface = IMG_Load("hRmaYty.png");
+  int src_preview_image_width = preview_surface->w;
+  int src_preview_image_height = preview_surface->h;
+  SDL_Texture* preview_texture = SDL_CreateTextureFromSurface(renderer, preview_surface);
+  if (preview_texture == NULL) {
     printf("Error creating texture");
     return 6;
   }
 
-  SDL_FreeSurface(lettuce_sur);
+  SDL_FreeSurface(preview_surface);
 
   // Setup Dear ImGui context
   IMGUI_CHECKVERSION();
@@ -73,15 +75,15 @@ int main(int, char**) {
         done = true;
     }
 
+    int window_width;
+    int window_height;
+    SDL_GetWindowSize(window, &window_width, &window_height);
+
     ImGui_ImplSDLRenderer2_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
     {
-      int window_width;
-      int window_height;
-      SDL_GetWindowSize(window, &window_width, &window_height);
-
       static float gaussian_blur_weight = 0.0f;
 
       ImGui::SetNextWindowPos(ImVec2(0, 0));
@@ -105,8 +107,7 @@ int main(int, char**) {
       ImGui::Checkbox("Display modifiers", &display_modifiers);
       ImGui::SliderFloat("Gaussian Blur", &gaussian_blur_weight, 0.0f, 1.0f);
 
-      const char* items[] = {"Apple",  "Banana",    "Cherry",     "Kiwi",      "Mango",
-                             "Orange", "Pineapple", "Strawberry", "Watermelon"};
+      const char* items[] = {"ass", "bitch", "cock", "cunt", "dick", "fuck", "piss", "pussy", "shit", "slut", "whore"};
       static int item_current = 1;
       ImGui::ListBox("Censored Words", &item_current, items, IM_ARRAYSIZE(items), 10);
 
@@ -122,7 +123,13 @@ int main(int, char**) {
     SDL_SetRenderDrawColor(renderer, 96, 96, 96, 0);
     SDL_RenderClear(renderer);
 
-    SDL_RenderCopy(renderer, lettuce_tex, NULL, NULL);
+    // Render preview image
+    int preview_image_width = (int)(window_width * 0.5);
+    int preview_image_height = (int)(window_width * 0.5 * src_preview_image_height / src_preview_image_width);
+    int preview_image_x = (int)(window_width / 2 - preview_image_width / 2);
+    int preview_image_y = (int)(window_height / 2 - preview_image_height / 2);
+    SDL_Rect location = {preview_image_x, preview_image_y, preview_image_width, preview_image_height};
+    SDL_RenderCopy(renderer, preview_texture, NULL, &location);
 
     ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
     SDL_RenderPresent(renderer);
@@ -133,7 +140,7 @@ int main(int, char**) {
   ImGui_ImplSDL2_Shutdown();
   ImGui::DestroyContext();
 
-  SDL_DestroyTexture(lettuce_tex);
+  SDL_DestroyTexture(preview_texture);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   SDL_Quit();
