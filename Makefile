@@ -2,7 +2,7 @@ CC = g++ -g
 
 CFLAGS = -std=c++17 -Wall
 
-SRC = app/main.cpp
+SRC = app/*.cpp
 SRC += libs/imgui/*.cpp
 SRC += libs/imgui/backends/imgui_impl_sdlrenderer2.cpp
 SRC += libs/imgui/backends/imgui_impl_sdl2.cpp
