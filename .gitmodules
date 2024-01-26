@@ -1,9 +1,6 @@
 [submodule "libs/imgui"]
 	path = libs/imgui
 	url = https://github.com/ocornut/imgui.git
-[submodule "libs/SDL"]
-	path = libs/SDL
-	url = https://github.com/libsdl-org/SDL.git
 [submodule "libs/imgui-filebrowser"]
 	path = libs/imgui-filebrowser
 	url = https://github.com/AirGuanZ/imgui-filebrowser.git

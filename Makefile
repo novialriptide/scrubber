@@ -27,7 +27,6 @@ ifeq ($(OS), Windows_NT)
 
 else ifeq ($(shell uname -s), Darwin)
 
-	LIBS += -I libs/SDL2
 	LIBS += `sdl2-config --cflags --libs`
 
 endif
