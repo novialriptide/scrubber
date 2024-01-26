@@ -21,6 +21,5 @@
     "unordered_map": "cpp",
     "unordered_set": "cpp",
     "valarray": "cpp"
-  },
-  "C_Cpp.default.compilerPath": "C:\\msys64\\mingw64\\bin\\g++.exe"
+  }
 }
