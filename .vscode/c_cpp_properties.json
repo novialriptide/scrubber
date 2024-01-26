@@ -1,7 +1,7 @@
 {
   "configurations": [
     {
-      "name": "Mac",
+      "name": "macOS (Apple Silicon)",
       "includePath": [
         "${workspaceFolder}/**",
         "/opt/homebrew/include/opencv4",
