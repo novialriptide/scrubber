@@ -1,6 +1,7 @@
 #define SDL_MAIN_HANDLED
 
 #include <SDL.h>
+#include <SDL_image.h>
 #include <stdio.h>
 
 #include "imgui.h"
@@ -9,12 +10,11 @@
 #include "imgui_impl_sdlrenderer2.h"
 
 int main(int, char**) {
-  // GetPrimaryMonitorStreamData();
-
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0) {
     printf("Error: %s\n", SDL_GetError());
     return -1;
   }
+  IMG_Init(IMG_INIT_JPG);
 
   // Create window with SDL_Renderer graphics context
   SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
@@ -30,6 +30,15 @@ int main(int, char**) {
     return 0;
   }
 
+  SDL_Surface* lettuce_sur = IMG_Load("94176792_p0.png");
+  SDL_Texture* lettuce_tex = SDL_CreateTextureFromSurface(renderer, lettuce_sur);
+  if (lettuce_tex == NULL) {
+    printf("Error creating texture");
+    return 6;
+  }
+
+  SDL_FreeSurface(lettuce_sur);
+
   // Setup Dear ImGui context
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
@@ -38,7 +47,7 @@ int main(int, char**) {
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
 
-  ImGui::StyleColorsDark();  // dark mode
+  ImGui::StyleColorsDark();
 
   // Setup Platform/Renderer backends
   ImGui_ImplSDL2_InitForSDLRenderer(window, renderer);
@@ -79,6 +88,18 @@ int main(int, char**) {
                    ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
                        ImGuiWindowFlags_NoCollapse);
 
+      if (ImGui::Button("Browse files")) {
+        fileDialog.Open();
+      }
+      ImGui::SameLine();
+
+      bool is_valid_file = !(std::filesystem::is_directory(fileDialog.GetSelected()));
+      const char* display_filename = "";
+      if (is_valid_file) {
+        display_filename = fileDialog.GetSelected().filename().c_str();
+      }
+      ImGui::Text("%s", display_filename);
+
       ImGui::Checkbox("Display modifiers", &display_modifiers);
       ImGui::SliderFloat("Gaussian Blur", &gaussian_blur_weight, 0.0f, 1.0f);
 
@@ -98,6 +119,9 @@ int main(int, char**) {
     SDL_RenderSetScale(renderer, io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y);
     SDL_SetRenderDrawColor(renderer, 96, 96, 96, 0);
     SDL_RenderClear(renderer);
+
+    SDL_RenderCopy(renderer, lettuce_tex, NULL, NULL);
+
     ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
     SDL_RenderPresent(renderer);
   }
@@ -107,6 +131,7 @@ int main(int, char**) {
   ImGui_ImplSDL2_Shutdown();
   ImGui::DestroyContext();
 
+  SDL_DestroyTexture(lettuce_tex);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   SDL_Quit();

@@ -23,11 +23,12 @@ ifeq ($(OS), Windows_NT)
 	LIBS += -l gdiplus
 	LIBS += -l ole32
 
-	LIBS += -lmingw32 -lSDL2main -lSDL2
+	LIBS += -l mingw32 -l SDL2main -l SDL2 -l SDL2image
 
 else ifeq ($(shell uname -s), Darwin)
 
 	LIBS += `sdl2-config --cflags --libs`
+	LIBS += -l SDL2_image
 
 endif
 
