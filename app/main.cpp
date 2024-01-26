@@ -11,6 +11,13 @@
 
 #include "imgui_theme.hpp"
 
+int* get_center_coordinates(int window_width, int window_height, int image_width, int image_height) {
+  static int pos[2];
+  pos[0] = (int)(window_width / 2 - image_width / 2);
+  pos[1] = (int)(window_height / 2 - image_height / 2);
+  return pos;
+}
+
 int main(int, char**) {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0) {
     printf("Error: %s\n", SDL_GetError());
@@ -75,6 +82,7 @@ int main(int, char**) {
         done = true;
     }
 
+    int toolbar_width;
     int window_width;
     int window_height;
     SDL_GetWindowSize(window, &window_width, &window_height);
@@ -91,6 +99,7 @@ int main(int, char**) {
       ImGui::Begin("Tools", 0,
                    ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
                        ImGuiWindowFlags_NoCollapse);
+      toolbar_width = ImGui::GetWindowSize().x;
 
       if (ImGui::Button("Browse files")) {
         fileDialog.Open();
@@ -120,15 +129,20 @@ int main(int, char**) {
     // Rendering
     ImGui::Render();
     SDL_RenderSetScale(renderer, io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y);
-    SDL_SetRenderDrawColor(renderer, 96, 96, 96, 0);
-    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, 96, 96, 96, 0);  // app background
+    SDL_RenderClear(renderer);                        // clear previous frame
 
     // Render preview image
+    window_width -= toolbar_width;  // dont want it to potentially collide with the toolbar
+
     int preview_image_width = (int)(window_width * 0.5);
     int preview_image_height = (int)(window_width * 0.5 * src_preview_image_height / src_preview_image_width);
-    int preview_image_x = (int)(window_width / 2 - preview_image_width / 2);
-    int preview_image_y = (int)(window_height / 2 - preview_image_height / 2);
-    SDL_Rect location = {preview_image_x, preview_image_y, preview_image_width, preview_image_height};
+
+    int* preview_image_pos =
+        get_center_coordinates(window_width, window_height, preview_image_width, preview_image_height);
+
+    SDL_Rect location = {toolbar_width + preview_image_pos[0], preview_image_pos[1], preview_image_width,
+                         preview_image_height};
     SDL_RenderCopy(renderer, preview_texture, NULL, &location);
 
     ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
