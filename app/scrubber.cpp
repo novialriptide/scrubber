@@ -193,7 +193,7 @@ void Scrubber::StyleColorsScrubber() {
 }
 
 void Scrubber::Init() {
-  LoadImage("hRmaYty.png");
+  LoadImage("tests/assets/rocketleague1.png");
 }
 
 void Scrubber::LoadImage(const char* file) {
