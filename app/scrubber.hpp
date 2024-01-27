@@ -8,7 +8,8 @@ struct IntVector2 {
 
 class Scrubber {
  public:
-  // char* censored_words[];
+  /// @brief A list of censored phrases
+  std::vector<std::string> censored_phrases;
   bool display_modifiers;
 
   IntVector2 preview_image_size;
@@ -40,4 +41,6 @@ class Scrubber {
   void CreateSaveDirectory();
 
   void CreateSaveFiles();
+
+  void LoadConfig();
 };

@@ -28,6 +28,17 @@ void get_center_coordinates(int window_width, int window_height, int image_width
   dest_y = (int)(window_height / 2 - image_height / 2);
 }
 
+char** strlist(std::vector<std::string>& input) {
+  char** charArray = new char*[input.size() + 1];  // +1 for the terminating nullptr
+  for (size_t i = 0; i < input.size(); ++i) {
+    charArray[i] = new char[input[i].size() + 1];
+    std::strcpy(charArray[i], input[i].c_str());
+  }
+  charArray[input.size()] = nullptr;
+
+  return charArray;
+}
+
 Scrubber::Scrubber() {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0) {
     printf("Error: %s\n", SDL_GetError());
@@ -50,6 +61,7 @@ Scrubber::Scrubber() {
 
   CreateSaveDirectory();
   CreateSaveFiles();
+  LoadConfig();
 
   // States
   this->display_modifiers = true;
@@ -96,6 +108,14 @@ void Scrubber::CreateSaveFiles() {
 
   std::ofstream file(path.c_str());
   file << config;
+}
+
+void Scrubber::LoadConfig() {
+  std::string path = this->kSavePath;
+  path += "/config.json";
+  std::ifstream config_ifstream(path.c_str());
+  nlohmann::json config = nlohmann::json::parse(config_ifstream);
+  this->censored_phrases = config.at("censored_phrases");
 }
 
 void Scrubber::StyleColorsScrubber() {
@@ -250,9 +270,9 @@ void Scrubber::Run() {
       ImGui::Checkbox("Display modifiers", &display_modifiers);
       ImGui::SliderFloat("Gaussian Blur", &gaussian_blur_weight, 0.0f, 1.0f);
 
-      const char* items[] = {"ass", "bitch", "cock", "cunt", "dick", "fuck", "piss", "pussy", "shit", "slut", "whore"};
+      char** items = strlist(this->censored_phrases);
       static int item_current = 1;
-      ImGui::ListBox("Censored Words", &item_current, items, IM_ARRAYSIZE(items), 10);
+      ImGui::ListBox("Censored Words", &item_current, items, this->censored_phrases.size(), 10);
 
       ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
       ImGui::End();
