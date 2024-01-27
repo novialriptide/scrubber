@@ -32,10 +32,9 @@ else ifeq ($(shell uname -s), Darwin)
 
 else ifeq ($(UNAME_S),Linux)
 
-	LIBS += -I /usr/include/SDL2/
-	LIBS += -L /usr/lib
-	
-	LIBS += -l SDL2 -l SDL2_image
+	LIBS += -lGL -ldl `sdl2-config --libs`
+
+	CXXFLAGS += `sdl2-config --cflags`
 
 endif
 
