@@ -1,4 +1,4 @@
-# scrubber [![macOS](https://github.com/novialriptide/scrubber/actions/workflows/build-from-macos.yml/badge.svg)](https://github.com/novialriptide/scrubber/actions/workflows/build-from-macos.yml)
+# scrubber [![macOS](https://github.com/novialriptide/scrubber/actions/workflows/build-from-macos.yml/badge.svg)](https://github.com/novialriptide/scrubber/actions/workflows/build-from-macos.yml) [![Ubuntu](https://github.com/novialriptide/scrubber/actions/workflows/build-from-ubuntu.yml/badge.svg)](https://github.com/novialriptide/scrubber/actions/workflows/build-from-ubuntu.yml)
 
 A C++17 tool that allows live-streamers to censor out keywords to make their stream more friendly to younger audiences.
 
@@ -19,6 +19,13 @@ opencv             ==  4.8.1
 1. Clone this repository (`git clone --recursive https://github.com/novialriptide/scrubber.git`)
 2. Install [HomeBrew](https://brew.sh/)
 3. Install dependencies (`brew install sdl2 sdl2_image opencv clang-format`)
+4. Run `make`
+
+### Ubuntu
+
+1. Clone this repository (`git clone --recursive https://github.com/novialriptide/scrubber.git`)
+2. Run `sudo apt-get update`
+3. Install dependencies (`sudo apt-get install libsdl2-dev libsdl2-image-dev libopencv-dev`)
 4. Run `make`
 
 ### Windows 11
