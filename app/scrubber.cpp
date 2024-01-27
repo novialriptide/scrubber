@@ -1,13 +1,24 @@
 #define SDL_MAIN_HANDLED
 
+#if _WIN32
+#include <windows.h>
+#include <Lmcons.h>
+#endif
+
 #include <SDL.h>
 #include <SDL_image.h>
+
 #include <stdio.h>
+#include <iostream>
+#include <fstream>
+#include <filesystem>
 
 #include "imgui.h"
 #include "imfilebrowser.h"
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_sdlrenderer2.h"
+
+#include "nlohmann/json.hpp"
 
 #include "scrubber.hpp"
 
@@ -15,6 +26,17 @@ void get_center_coordinates(int window_width, int window_height, int image_width
                             int& dest_y) {
   dest_x = (int)(window_width / 2 - image_width / 2);
   dest_y = (int)(window_height / 2 - image_height / 2);
+}
+
+char** strlist(std::vector<std::string>& input) {
+  char** charArray = new char*[input.size() + 1];  // +1 for the terminating nullptr
+  for (size_t i = 0; i < input.size(); ++i) {
+    charArray[i] = new char[input[i].size() + 1];
+    std::strcpy(charArray[i], input[i].c_str());
+  }
+  charArray[input.size()] = nullptr;
+
+  return charArray;
 }
 
 Scrubber::Scrubber() {
@@ -37,8 +59,63 @@ Scrubber::Scrubber() {
     exit(0);
   }
 
+  CreateSaveDirectory();
+  CreateSaveFiles();
+  LoadConfig();
+
   // States
   this->display_modifiers = true;
+}
+
+void Scrubber::CreateSaveDirectory() {
+#if _WIN32
+  TCHAR username[UNLEN + 1];
+  DWORD size = UNLEN + 1;
+  GetUserName((TCHAR*)username, &size);
+  this->kSavePath = "C:\\Users\\" + username + "\\AppData\\scrubber";
+#elif __APPLE__
+  std::string incomplete_save = std::getenv("HOME");
+  incomplete_save += "/Library/Application Support/scrubber";
+
+  this->kSavePath = new char[incomplete_save.length() + 1];
+  strcpy(this->kSavePath, incomplete_save.c_str());
+
+#elif __linux__
+  this->kSavePath = "/etc/scrubber";
+#else
+  printf("%s", "Unsupported operating system.");
+  exit(0);
+#endif
+
+  // Make save directory if it doesn't exist
+  if (!std::filesystem::exists(this->kSavePath)) {
+    std::filesystem::create_directory(this->kSavePath);
+  }
+}
+
+void Scrubber::CreateSaveFiles() {
+  if (this->kSavePath == nullptr) {
+    printf("%s", "Something went wrong.");
+    exit(1);
+  }
+
+  nlohmann::json config;
+  config["censored_phrases"] = {"ass",  "bitch", "cock", "cunt", "dick", "fuck",
+                                "piss", "pussy", "shit", "slut", "whore"};
+
+  std::string path = this->kSavePath;
+  path += "/config.json";
+
+  std::ofstream file(path.c_str());
+  file << config;
+}
+
+void Scrubber::LoadConfig() {
+  std::string path = this->kSavePath;
+  path += "/config.json";
+  std::ifstream config_ifstream(path.c_str());
+  nlohmann::json config = nlohmann::json::parse(config_ifstream);
+  this->censored_phrases = config.at("censored_phrases");
 }
 
 void Scrubber::StyleColorsScrubber() {
@@ -193,9 +270,9 @@ void Scrubber::Run() {
       ImGui::Checkbox("Display modifiers", &display_modifiers);
       ImGui::SliderFloat("Gaussian Blur", &gaussian_blur_weight, 0.0f, 1.0f);
 
-      const char* items[] = {"ass", "bitch", "cock", "cunt", "dick", "fuck", "piss", "pussy", "shit", "slut", "whore"};
+      char** items = strlist(this->censored_phrases);
       static int item_current = 1;
-      ImGui::ListBox("Censored Words", &item_current, items, IM_ARRAYSIZE(items), 10);
+      ImGui::ListBox("Censored Words", &item_current, items, this->censored_phrases.size(), 10);
 
       ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
       ImGui::End();
@@ -232,6 +309,8 @@ void Scrubber::Run() {
   }
 
   // Cleanup
+  delete[] this->kSavePath;
+
   ImGui_ImplSDLRenderer2_Shutdown();
   ImGui_ImplSDL2_Shutdown();
   ImGui::DestroyContext();

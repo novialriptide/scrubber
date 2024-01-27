@@ -11,6 +11,7 @@ LIBS =
 LIBS += -I libs/imgui
 LIBS += -I libs/imgui/backends
 LIBS += -I libs/imgui-filebrowser
+LIBS += -I libs/json/single_include
 
 #LIBS += $(shell pkg-config --cflags --libs opencv4)
 
