@@ -1,9 +1,9 @@
-name: clang-format Check
-on: [push, pull_request]
+name: clang-format
+on: [push]
 
 jobs:
   formatting-check:
-    name: Formatting Check
+    name: clang-format style check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
