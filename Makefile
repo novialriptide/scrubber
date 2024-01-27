@@ -30,6 +30,15 @@ else ifeq ($(shell uname -s), Darwin)
 	LIBS += `sdl2-config --cflags --libs`
 	LIBS += -l SDL2_image
 
+else ifeq ($(shell uname -s), Linux)
+
+	LIBS += -I /usr/include/SDL2
+	LIBS += -L /usr/lib
+
+	LIBS += `sdl2-config --cflags -- libs`
+	LIBS += -l SDL2
+	LIBS += -l SDL2_image
+
 endif
 
 all: $(Scrubber)
