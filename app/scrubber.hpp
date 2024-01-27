@@ -13,6 +13,8 @@ class Scrubber {
 
   IntVector2 preview_image_size;
 
+  const char* kSavePath;
+
   /// @brief constructor
   Scrubber();
 
@@ -34,4 +36,6 @@ class Scrubber {
   SDL_Texture* preview_texture;
 
   ImGui::FileBrowser fileDialog;
+
+  void CreateSaveDirectory();
 };

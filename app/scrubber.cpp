@@ -1,8 +1,16 @@
 #define SDL_MAIN_HANDLED
 
+#if _WIN32
+#include <windows.h>
+#include <Lmcons.h>
+#endif
+
 #include <SDL.h>
 #include <SDL_image.h>
+
 #include <stdio.h>
+#include <iostream>
+#include <filesystem>
 
 #include "imgui.h"
 #include "imfilebrowser.h"
@@ -37,8 +45,33 @@ Scrubber::Scrubber() {
     exit(0);
   }
 
+  CreateSaveDirectory();
+
   // States
   this->display_modifiers = true;
+}
+
+void Scrubber::CreateSaveDirectory() {
+#if _WIN32
+  TCHAR username[UNLEN + 1];
+  DWORD size = UNLEN + 1;
+  GetUserName((TCHAR*)username, &size);
+  kSavePath = "C:\\Users\\" + username + "\\AppData\\scrubber";
+#elif __APPLE__
+  std::string incomplete_save = std::getenv("HOME");
+  incomplete_save += "/Library/Application Support/scrubber";
+  kSavePath = incomplete_save.c_str();
+#elif __linux__
+  kSavePath = "/etc/scrubber";
+#else
+  printf("%s", "Unsupported operating system.");
+  exit(0);
+#endif
+
+  // Make save directory if it doesn't exist
+  if (!std::filesystem::exists(kSavePath)) {
+    std::filesystem::create_directory(kSavePath);
+  }
 }
 
 void Scrubber::StyleColorsScrubber() {
