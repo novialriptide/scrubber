@@ -34,10 +34,11 @@ opencv             ==  4.8.1
 2. Install [MSYS2](https://www.msys2.org/)
    1. Make sure you set your installation folder to `C:/msys64`
 3. Install SDL2 from the MSYS2 terminal (`pacman -S mingw-w64-i686-SDL2`)
-4. Install clang-format
+4. Install SDL2_image from the MSYS2 terminal (`pacman -S mingw-w64-i686-SDL2_image`)
+5. Install clang-format
    1. Install the latest version of [Python](https://www.python.org/)
    2. Install clang-format (`python -m pip install clang-format`)
-5. Run `mingw32-make`
+6. Run `mingw32-make`
 
 ## How to Contribute
 
