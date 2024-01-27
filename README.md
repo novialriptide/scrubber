@@ -9,6 +9,7 @@ SDL                ==  2.28.5
 SDL_image          ==  2.8.2
 imgui              ==  1.90
 imgui-filebrowser  ==  7cc76a0
+nlohmann/json      ==  3.11.3
 opencv             ==  4.8.1
 ```
 

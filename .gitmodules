@@ -4,3 +4,6 @@
 [submodule "libs/imgui-filebrowser"]
 	path = libs/imgui-filebrowser
 	url = https://github.com/AirGuanZ/imgui-filebrowser.git
+[submodule "libs/json"]
+	path = libs/json
+	url = https://github.com/nlohmann/json.git
