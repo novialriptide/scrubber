@@ -16,6 +16,9 @@ class Scrubber {
   /// @brief constructor
   Scrubber();
 
+  /// @brief Sets the color theme
+  void StyleColorsScrubber();
+
   /// @brief Starts up the scrubber window
   void Init();
 
