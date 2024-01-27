@@ -8,7 +8,7 @@ A C++17 tool that allows live-streamers to censor out keywords to make their str
 SDL                ==  2.28.5
 SDL_image          ==  2.8.2
 imgui              ==  1.90
-imgui-filebrowser  ==  7cc76a0
+imgui-filebrowser  ==  a3d0f50
 opencv             ==  4.8.1
 ```
 
