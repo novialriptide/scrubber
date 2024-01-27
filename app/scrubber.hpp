@@ -13,7 +13,7 @@ class Scrubber {
 
   IntVector2 preview_image_size;
 
-  const char* kSavePath;
+  char* kSavePath;
 
   /// @brief constructor
   Scrubber();
@@ -38,4 +38,6 @@ class Scrubber {
   ImGui::FileBrowser fileDialog;
 
   void CreateSaveDirectory();
+
+  void CreateSaveFiles();
 };

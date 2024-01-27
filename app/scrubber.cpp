@@ -10,12 +10,15 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <fstream>
 #include <filesystem>
 
 #include "imgui.h"
 #include "imfilebrowser.h"
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_sdlrenderer2.h"
+
+#include "nlohmann/json.hpp"
 
 #include "scrubber.hpp"
 
@@ -46,6 +49,7 @@ Scrubber::Scrubber() {
   }
 
   CreateSaveDirectory();
+  CreateSaveFiles();
 
   // States
   this->display_modifiers = true;
@@ -56,22 +60,42 @@ void Scrubber::CreateSaveDirectory() {
   TCHAR username[UNLEN + 1];
   DWORD size = UNLEN + 1;
   GetUserName((TCHAR*)username, &size);
-  kSavePath = "C:\\Users\\" + username + "\\AppData\\scrubber";
+  this->kSavePath = "C:\\Users\\" + username + "\\AppData\\scrubber";
 #elif __APPLE__
   std::string incomplete_save = std::getenv("HOME");
   incomplete_save += "/Library/Application Support/scrubber";
-  kSavePath = incomplete_save.c_str();
+
+  this->kSavePath = new char[incomplete_save.length() + 1];
+  strcpy(this->kSavePath, incomplete_save.c_str());
+
 #elif __linux__
-  kSavePath = "/etc/scrubber";
+  this->kSavePath = "/etc/scrubber";
 #else
   printf("%s", "Unsupported operating system.");
   exit(0);
 #endif
 
   // Make save directory if it doesn't exist
-  if (!std::filesystem::exists(kSavePath)) {
-    std::filesystem::create_directory(kSavePath);
+  if (!std::filesystem::exists(this->kSavePath)) {
+    std::filesystem::create_directory(this->kSavePath);
   }
+}
+
+void Scrubber::CreateSaveFiles() {
+  if (this->kSavePath == nullptr) {
+    printf("%s", "Something went wrong.");
+    exit(1);
+  }
+
+  nlohmann::json config;
+  config["censored_phrases"] = {"ass",  "bitch", "cock", "cunt", "dick", "fuck",
+                                "piss", "pussy", "shit", "slut", "whore"};
+
+  std::string path = this->kSavePath;
+  path += "/config.json";
+
+  std::ofstream file(path.c_str());
+  file << config;
 }
 
 void Scrubber::StyleColorsScrubber() {
@@ -265,6 +289,8 @@ void Scrubber::Run() {
   }
 
   // Cleanup
+  delete[] this->kSavePath;
+
   ImGui_ImplSDLRenderer2_Shutdown();
   ImGui_ImplSDL2_Shutdown();
   ImGui::DestroyContext();
