@@ -46,7 +46,7 @@ All contributions are welcome! Before you contribute, make sure you create an is
 
 It is highly recommended to use [Visual Studio Code](https://code.visualstudio.com/), as tools such as intellisense and auto-formatting are setup to enhance the developer experience. Contributions to add support to other IDEs are welcome!
 
-Use `clang-format -i app/*.cpp` to format your code
+Use `clang-format -i app/*.cpp` to format your code.
 
 ## Disclaimer
 
