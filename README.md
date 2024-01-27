@@ -8,7 +8,7 @@ A C++17 tool that allows live-streamers to censor out keywords to make their str
 SDL                ==  2.28.5
 SDL_image          ==  2.8.2
 imgui              ==  1.90
-imgui-filebrowser  ==  7cc76a0
+imgui-filebrowser  ==  a3d0f50
 nlohmann/json      ==  3.11.3
 opencv             ==  4.8.1
 ```
@@ -35,10 +35,11 @@ opencv             ==  4.8.1
 2. Install [MSYS2](https://www.msys2.org/)
    1. Make sure you set your installation folder to `C:/msys64`
 3. Install SDL2 from the MSYS2 terminal (`pacman -S mingw-w64-i686-SDL2`)
-4. Install clang-format
+4. Install SDL2_image from the MSYS2 terminal (`pacman -S mingw-w64-i686-SDL2_image`)
+5. Install clang-format
    1. Install the latest version of [Python](https://www.python.org/)
    2. Install clang-format (`python -m pip install clang-format`)
-5. Run `mingw32-make`
+6. Run `mingw32-make`
 
 ## How to Contribute
 
@@ -46,7 +47,7 @@ All contributions are welcome! Before you contribute, make sure you create an is
 
 It is highly recommended to use [Visual Studio Code](https://code.visualstudio.com/), as tools such as intellisense and auto-formatting are setup to enhance the developer experience. Contributions to add support to other IDEs are welcome!
 
-Use `clang-format -i app/*.cpp` to format your code
+Use `clang-format -i app/*.cpp` to format your code.
 
 ## Disclaimer
 
