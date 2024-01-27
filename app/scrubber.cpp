@@ -274,6 +274,13 @@ void Scrubber::Run() {
       static int item_current = 1;
       ImGui::ListBox("Censored Words", &item_current, items, this->censored_phrases.size(), 10);
 
+      if (ImGui::Button("+")) {}
+      ImGui::SameLine();
+      char* new_phrase = (char*)malloc(sizeof(char) * (64 + 1));
+      ImGui::InputText("##", new_phrase, 64);
+      ImGui::SameLine();
+      if (ImGui::Button("-")) {}
+
       ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
       ImGui::End();
     }
