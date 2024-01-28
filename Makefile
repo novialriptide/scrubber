@@ -28,6 +28,10 @@ ifeq ($(OS), Windows_NT)
 
 else ifeq ($(shell uname -s), Darwin)
 
+	LIBS += app/macos_helpers.mm
+	LIBS += -framework Foundation
+	LIBS += -framework ScreenCaptureKit
+
 	LIBS += `sdl2-config --cflags --libs`
 	LIBS += -l SDL2_image
 

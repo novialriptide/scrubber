@@ -11,11 +11,18 @@
 
 #include "scrubber.hpp"
 
+#ifdef __APPLE__
+#include "macos_helpers.mm"
+#endif
+
 int main(int, char**) {
+  /*
   Scrubber app;
 
   app.Init();
   app.Run();
+  */
+  scrbr_screenshot();
 
   return 0;
 }
