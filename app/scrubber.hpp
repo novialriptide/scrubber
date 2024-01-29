@@ -36,6 +36,11 @@ class Scrubber {
   /// @return true if successful
   bool AddCensoredPhrase(const char* phrase);
 
+  /// @brief Uncensors a phrase.
+  /// @param phrase The phrase you want to uncensor.
+  /// @return true if successful
+  bool RemoveCensoredPhrase(const char* phrase);
+
  private:
   SDL_Window* window;
   SDL_Renderer* renderer;

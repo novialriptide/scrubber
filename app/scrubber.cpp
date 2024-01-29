@@ -276,12 +276,15 @@ void Scrubber::Run() {
       ImGui::ListBox("Censored Words", &item_current, items, this->censored_phrases.size(), 10);
 
       if (ImGui::Button("+")) {
-        this->censored_phrases.insert(this->censored_phrases.begin(), this->new_phrase);
+        // this->censored_phrases.insert(this->censored_phrases.begin(), this->new_phrase);
+        AddCensoredPhrase(this->new_phrase);
       }
       ImGui::SameLine();
       ImGui::InputText("##", this->new_phrase, 64);
       ImGui::SameLine();
-      if (ImGui::Button("-")) {}
+      if (ImGui::Button("-")) {
+        RemoveCensoredPhrase(this->new_phrase);
+      }
 
       ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
       ImGui::End();
@@ -333,12 +336,29 @@ void Scrubber::Run() {
 }
 
 bool Scrubber::AddCensoredPhrase(const char* phrase) {
-  if (!(std::find(this->censored_phrases.begin(), this->censored_phrases.end(), phrase) !=
-        this->censored_phrases.end())) {
+  if ((std::find(this->censored_phrases.begin(), this->censored_phrases.end(), phrase) !=
+       this->censored_phrases.end())) {
     return false;
   }
 
   this->censored_phrases.insert(this->censored_phrases.begin(), phrase);
 
   return true;
+}
+
+bool Scrubber::RemoveCensoredPhrase(const char* phrase) {
+  if (!(std::find(this->censored_phrases.begin(), this->censored_phrases.end(), phrase) !=
+        this->censored_phrases.end())) {
+    return false;
+  }
+
+  size_t i;
+  for (i = 0; i < this->censored_phrases.size(); i++) {
+    if (strcmp(this->censored_phrases.at(i).c_str(), phrase) == 0) {
+      this->censored_phrases.erase(this->censored_phrases.begin() + i);
+      return true;
+    }
+  }
+
+  return false;
 }
