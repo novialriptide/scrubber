@@ -100,12 +100,16 @@ void Scrubber::CreateSaveFiles() {
     exit(1);
   }
 
+  std::string path = this->kSavePath;
+  path += "/config.json";
+
+  if (std::filesystem::exists(path)) {
+    return;
+  }
+
   nlohmann::json config;
   config["censored_phrases"] = {"ass",  "bitch", "cock", "cunt", "dick", "fuck",
                                 "piss", "pussy", "shit", "slut", "whore"};
-
-  std::string path = this->kSavePath;
-  path += "/config.json";
 
   std::ofstream file(path.c_str());
   file << config;
