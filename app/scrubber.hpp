@@ -11,6 +11,7 @@ class Scrubber {
   /// @brief A list of censored phrases
   std::vector<std::string> censored_phrases;
   bool display_modifiers;
+  char* new_phrase;
 
   IntVector2 preview_image_size;
 
@@ -30,6 +31,16 @@ class Scrubber {
   /// @brief Starts the application
   void Run();
 
+  /// @brief Add a phrase to censor. Prevents duplicates.
+  /// @param phrase The phrase you want to censor.
+  /// @return true if successful
+  bool AddCensoredPhrase(const char* phrase);
+
+  /// @brief Uncensors a phrase.
+  /// @param phrase The phrase you want to uncensor.
+  /// @return true if successful
+  bool RemoveCensoredPhrase(const char* phrase);
+
  private:
   SDL_Window* window;
   SDL_Renderer* renderer;
@@ -43,4 +54,8 @@ class Scrubber {
   void CreateSaveFiles();
 
   void LoadConfig();
+
+  /// @brief Saves config into a JSON file.
+  /// @return true if successful
+  bool SaveConfig();
 };

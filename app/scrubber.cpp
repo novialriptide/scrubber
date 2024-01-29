@@ -65,6 +65,7 @@ Scrubber::Scrubber() {
 
   // States
   this->display_modifiers = true;
+  this->new_phrase = (char*)malloc(sizeof(char) * (64 + 1));
 }
 
 void Scrubber::CreateSaveDirectory() {
@@ -99,12 +100,16 @@ void Scrubber::CreateSaveFiles() {
     exit(1);
   }
 
+  std::string path = this->kSavePath;
+  path += "/config.json";
+
+  if (std::filesystem::exists(path)) {
+    return;
+  }
+
   nlohmann::json config;
   config["censored_phrases"] = {"ass",  "bitch", "cock", "cunt", "dick", "fuck",
                                 "piss", "pussy", "shit", "slut", "whore"};
-
-  std::string path = this->kSavePath;
-  path += "/config.json";
 
   std::ofstream file(path.c_str());
   file << config;
@@ -116,6 +121,19 @@ void Scrubber::LoadConfig() {
   std::ifstream config_ifstream(path.c_str());
   nlohmann::json config = nlohmann::json::parse(config_ifstream);
   this->censored_phrases = config.at("censored_phrases");
+}
+
+bool Scrubber::SaveConfig() {
+  nlohmann::json config;
+  config["censored_phrases"] = this->censored_phrases;
+
+  std::string path = this->kSavePath;
+  path += "/config.json";
+
+  std::ofstream file(path.c_str());
+  file << config;
+
+  return true;
 }
 
 void Scrubber::StyleColorsScrubber() {
@@ -274,6 +292,17 @@ void Scrubber::Run() {
       static int item_current = 1;
       ImGui::ListBox("Censored Words", &item_current, items, this->censored_phrases.size(), 10);
 
+      if (ImGui::Button("+")) {
+        // this->censored_phrases.insert(this->censored_phrases.begin(), this->new_phrase);
+        AddCensoredPhrase(this->new_phrase);
+      }
+      ImGui::SameLine();
+      ImGui::InputText("##", this->new_phrase, 64);
+      ImGui::SameLine();
+      if (ImGui::Button("-")) {
+        RemoveCensoredPhrase(this->new_phrase);
+      }
+
       ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
       ImGui::End();
     }
@@ -308,6 +337,8 @@ void Scrubber::Run() {
     SDL_RenderPresent(this->renderer);
   }
 
+  SaveConfig();
+
   // Cleanup
   delete[] this->kSavePath;
 
@@ -321,4 +352,32 @@ void Scrubber::Run() {
   SDL_Quit();
 
   exit(0);
+}
+
+bool Scrubber::AddCensoredPhrase(const char* phrase) {
+  if ((std::find(this->censored_phrases.begin(), this->censored_phrases.end(), phrase) !=
+       this->censored_phrases.end())) {
+    return false;
+  }
+
+  this->censored_phrases.insert(this->censored_phrases.begin(), phrase);
+
+  return true;
+}
+
+bool Scrubber::RemoveCensoredPhrase(const char* phrase) {
+  if (!(std::find(this->censored_phrases.begin(), this->censored_phrases.end(), phrase) !=
+        this->censored_phrases.end())) {
+    return false;
+  }
+
+  size_t i;
+  for (i = 0; i < this->censored_phrases.size(); i++) {
+    if (strcmp(this->censored_phrases.at(i).c_str(), phrase) == 0) {
+      this->censored_phrases.erase(this->censored_phrases.begin() + i);
+      return true;
+    }
+  }
+
+  return false;
 }
