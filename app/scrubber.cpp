@@ -123,6 +123,19 @@ void Scrubber::LoadConfig() {
   this->censored_phrases = config.at("censored_phrases");
 }
 
+bool Scrubber::SaveConfig() {
+  nlohmann::json config;
+  config["censored_phrases"] = this->censored_phrases;
+
+  std::string path = this->kSavePath;
+  path += "/config.json";
+
+  std::ofstream file(path.c_str());
+  file << config;
+
+  return true;
+}
+
 void Scrubber::StyleColorsScrubber() {
   auto& colors = ImGui::GetStyle().Colors;
   colors[ImGuiCol_WindowBg] = ImVec4{0.1f, 0.1f, 0.13f, 1.0f};
@@ -323,6 +336,8 @@ void Scrubber::Run() {
     ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
     SDL_RenderPresent(this->renderer);
   }
+
+  SaveConfig();
 
   // Cleanup
   delete[] this->kSavePath;

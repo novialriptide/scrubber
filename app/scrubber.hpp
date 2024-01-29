@@ -54,4 +54,8 @@ class Scrubber {
   void CreateSaveFiles();
 
   void LoadConfig();
+
+  /// @brief Saves config into a JSON file.
+  /// @return true if successful
+  bool SaveConfig();
 };
