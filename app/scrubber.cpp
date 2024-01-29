@@ -65,6 +65,7 @@ Scrubber::Scrubber() {
 
   // States
   this->display_modifiers = true;
+  this->new_phrase = (char*)malloc(sizeof(char) * (64 + 1));
 }
 
 void Scrubber::CreateSaveDirectory() {
@@ -274,10 +275,11 @@ void Scrubber::Run() {
       static int item_current = 1;
       ImGui::ListBox("Censored Words", &item_current, items, this->censored_phrases.size(), 10);
 
-      if (ImGui::Button("+")) {}
+      if (ImGui::Button("+")) {
+        this->censored_phrases.insert(this->censored_phrases.begin(), this->new_phrase);
+      }
       ImGui::SameLine();
-      char* new_phrase = (char*)malloc(sizeof(char) * (64 + 1));
-      ImGui::InputText("##", new_phrase, 64);
+      ImGui::InputText("##", this->new_phrase, 64);
       ImGui::SameLine();
       if (ImGui::Button("-")) {}
 
@@ -328,4 +330,15 @@ void Scrubber::Run() {
   SDL_Quit();
 
   exit(0);
+}
+
+bool Scrubber::AddCensoredPhrase(const char* phrase) {
+  if (!(std::find(this->censored_phrases.begin(), this->censored_phrases.end(), phrase) !=
+        this->censored_phrases.end())) {
+    return false;
+  }
+
+  this->censored_phrases.insert(this->censored_phrases.begin(), phrase);
+
+  return true;
 }
