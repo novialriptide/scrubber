@@ -13,7 +13,8 @@ LIBS += -I libs/imgui/backends
 LIBS += -I libs/imgui-filebrowser
 LIBS += -I libs/json/single_include
 
-#LIBS += $(shell pkg-config --cflags --libs opencv4)
+LIBS += -l tesseract
+LIBS += $(shell pkg-config --cflags --libs opencv4)
 
 ifeq ($(OS), Windows_NT)
 
@@ -27,6 +28,8 @@ ifeq ($(OS), Windows_NT)
 	LIBS += -l mingw32 -l SDL2main -l SDL2 -l SDL2_image
 
 else ifeq ($(shell uname -s), Darwin)
+
+	LIBS += -I /opt/homebrew/include/
 
 	LIBS += `sdl2-config --cflags --libs`
 	LIBS += -l SDL2_image

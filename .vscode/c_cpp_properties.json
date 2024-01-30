@@ -4,8 +4,11 @@
       "name": "macOS (Apple Silicon)",
       "includePath": [
         "${workspaceFolder}/**",
+        "/opt/homebrew/include/",
         "/opt/homebrew/include/opencv4",
-        "/opt/homebrew/include/sdl2"
+        "/opt/homebrew/include/sdl2",
+        "/opt/homebrew/include/tesseract",
+        "/opt/homebrew/include/leptonica"
       ],
       "defines": [],
       "macFrameworkPath": [

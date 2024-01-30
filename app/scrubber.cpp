@@ -19,6 +19,11 @@
 #include "imgui_impl_sdlrenderer2.h"
 
 #include "nlohmann/json.hpp"
+#include <tesseract/baseapi.h>
+
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 #include "scrubber.hpp"
 
@@ -40,6 +45,8 @@ char** strlist(std::vector<std::string>& input) {
 }
 
 Scrubber::Scrubber() {
+  ocr.Init(NULL, "eng");
+
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0) {
     printf("Error: %s\n", SDL_GetError());
     exit(-1);
@@ -224,6 +231,8 @@ void Scrubber::LoadImage(const char* file) {
     exit(6);
   }
 
+  this->preview_image_path = file;
+
   SDL_FreeSurface(preview_surface);
 }
 
@@ -352,6 +361,49 @@ void Scrubber::Run() {
   SDL_Quit();
 
   exit(0);
+}
+
+FoundText* Scrubber::GetDetectedText() {
+  cv::Mat image = cv::imread(this->preview_image_path);
+
+  cv::Mat gray;
+  cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
+
+  // Apply thresholding to create a binary image
+  cv::Mat binary;
+  cv::threshold(gray, binary, 128, 255, cv::THRESH_BINARY);
+
+  cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
+  cv::morphologyEx(binary, binary, cv::MORPH_CLOSE, kernel);
+
+  std::vector<std::vector<cv::Point>> contours;
+  cv::findContours(binary, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
+  float minAreaThreshold = 1000;
+  float maxAreaThreshold = 10000;
+
+  FoundText* found_texts = new FoundText[contours.size()];
+
+  size_t i = 0;
+  for (const auto& contour : contours) {
+    double area = cv::contourArea(contour);
+    if (area > minAreaThreshold && area < maxAreaThreshold) {
+      cv::Rect boundingBox = cv::boundingRect(contour);
+
+      cv::Mat roi = image(boundingBox);
+
+      ocr.SetImage(roi.data, roi.cols, roi.rows, 3, roi.step);
+      std::string recognizedText = ocr.GetUTF8Text();
+
+      found_texts[i].boundingBox = boundingBox;
+      found_texts[i].text = (char*)malloc(recognizedText.size() * sizeof(char));
+      strcpy(found_texts[i].text, recognizedText.c_str());
+
+      i++;
+    }
+  }
+
+  return found_texts;
 }
 
 bool Scrubber::AddCensoredPhrase(const char* phrase) {

@@ -19,7 +19,7 @@ opencv             ==  4.8.1
 
 1. Clone this repository (`git clone --recursive https://github.com/novialriptide/scrubber.git`)
 2. Install [HomeBrew](https://brew.sh/)
-3. Install dependencies (`brew install sdl2 sdl2_image opencv clang-format`)
+3. Install dependencies (`brew install sdl2 sdl2_image opencv tesseract leptonica clang-format`)
 4. Run `make`
 
 ### Ubuntu

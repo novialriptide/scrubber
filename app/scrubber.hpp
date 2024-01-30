@@ -1,9 +1,18 @@
 #include "imgui.h"
 #include "imfilebrowser.h"
 
+#include <opencv2/opencv.hpp>
+
+#include <tesseract/baseapi.h>
+
 struct IntVector2 {
   int x;
   int y;
+};
+
+struct FoundText {
+  cv::Rect boundingBox;
+  char* text;
 };
 
 class Scrubber {
@@ -14,6 +23,7 @@ class Scrubber {
   char* new_phrase;
 
   IntVector2 preview_image_size;
+  const char* preview_image_path;
 
   char* kSavePath;
 
@@ -41,7 +51,11 @@ class Scrubber {
   /// @return true if successful
   bool RemoveCensoredPhrase(const char* phrase);
 
+  FoundText* GetDetectedText();
+
  private:
+  tesseract::TessBaseAPI ocr;
+
   SDL_Window* window;
   SDL_Renderer* renderer;
 
