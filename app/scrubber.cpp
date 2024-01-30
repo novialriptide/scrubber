@@ -115,8 +115,8 @@ void Scrubber::CreateSaveFiles() {
   }
 
   nlohmann::json config;
-  config["censored_phrases"] = {"ass",  "bitch", "cock", "cunt", "dick", "fuck",
-                                "piss", "pussy", "shit", "slut", "whore"};
+  config["censored_phrases"] = {"ass",   "bitch", "cock",  "cunt", "dick", "fuck", "nigger",
+                                "nigga", "piss",  "pussy", "shit", "slut", "whore"};
 
   std::ofstream file(path.c_str());
   file << config;
